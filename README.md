@@ -24,7 +24,7 @@ This project utilized PostgreSQL, Python (Pandas, Seaborn), and advanced SQL (Wi
 
 The investigation followed a clear Hypothesis Tree, ruling out global factors (e.g., device type, app version) to isolate the segment responsible for the collapse.
 
-### 1. Initial Observation and Segmentation (The "Where")
+### 1. Initial Observation and Segmentation 
 
 Segmented time-series analysis was the key diagnostic step.
 
@@ -33,7 +33,7 @@ Segmented time-series analysis was the key diagnostic step.
 
 
 
-### 2. Behavioral Analysis Confirms Failure (The "Why")
+### 2. Behavioral Analysis Confirms Failure 
 
 Analyzing the **Bounce Rate Proxy** confirmed the behavioral cause—users were leaving the app immediately due to poor content recommendations.
 
