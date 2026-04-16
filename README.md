@@ -22,20 +22,20 @@ This project utilized PostgreSQL, Python (Pandas, Seaborn), and advanced SQL (Wi
 
 ## Phase I & II: Diagnosis and Evidence
 
-The investigation followed a clear Hypothesis Tree, ruling out global factors (e.g., device type, app version) to isolate the segment responsible for the collapse.
+The investigation followed a clear Hypothesis Tree, ruling out global factors (example : device type, app version) to isolate the segment responsible for the collapse.
 
 ### 1. Initial Observation and Segmentation 
 
 Segmented time-series analysis was the key diagnostic step.
 
-* **Finding:** The decline in Average Daily Plays per User was overwhelmingly concentrated in **IN-North and IN-South**, immediately isolating the scope of the problem to a failure in regional content delivery.
-* **Visualization:** Segmented Line Plot of Average Daily Plays per User.
+* **Finding:** The decline in Average Daily Plays per User was concentrated in **IN-North and IN-South**, immediately isolating the scope of the problem to a failure in regional content delivery.
+* "**Visualization:** Segmented Line Plot of Average Daily Plays per User."
 
 
 
-### 2. Behavioral Analysis Confirms Failure 
+### 2. Behavioral Analysis 
 
-Analyzing the **Bounce Rate Proxy** confirmed the behavioral cause—users were leaving the app immediately due to poor content recommendations.
+Analyzing the **Bounce Rate Proxy** confirmed the behavioral cause-users were leaving the app immediately due to poor content recommendations.
 
 * **Finding:** The bounce rate for IN-North/South **spiked sharply** after November 17, confirming the failure mechanism: the model served unengaging content, causing instant abandonment.
 * **Visualization:** Segmented Line Plot of Daily Bounce Rate Proxy (Users who Opened but Did Not Play).
