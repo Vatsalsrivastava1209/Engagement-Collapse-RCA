@@ -1,6 +1,6 @@
 # Case Study: Investigating an Engagement Collapse After a Recommendation Model Update
 
-## Executive Summary & Key Findings
+## Summary & Key Findings
 
 This project utilized PostgreSQL, Python (Pandas, Seaborn), and advanced SQL (Window Functions, CTEs) to perform a **Root Cause Analysis (RCA)** on a severe metric collapse.
 
