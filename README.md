@@ -6,8 +6,8 @@ This project utilized PostgreSQL, Python (Pandas, Seaborn), and advanced SQL (Wi
 
 | Metric | Impact | Root Cause | Business Impact |
 | :--- | :--- | :--- | :--- |
-| **Overall Watch Time** | **17% Collapse** | Localized failure in **Recommendation Model v4.2** | Loss of approximately **[INSERT FINAL LOST PLAYS HERE]** total video plays across two key regions over 7 days. |
-| **Location** | **Highly Segmented** | Failure traced specifically to the **IN-North and IN-South regions**. | High user frustration confirmed by a **[INSERT BOUNCE RATE SPIKE %]** spike in Bounce Rate in affected areas. |
+| **Overall Watch Time** | **17% Collapse** | Localized failure in **Recommendation Model v4.2** | Loss of approximately **1.3 Million** total video plays across two key regions over 7 days. |
+| **Location** | **Highly Segmented** | Failure traced specifically to the **IN-North and IN-South regions**. | High user frustration confirmed by a **8** spike in Bounce Rate in affected areas. |
 
 ***
 
