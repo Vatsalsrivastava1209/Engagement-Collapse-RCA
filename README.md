@@ -29,7 +29,6 @@ The investigation followed a clear Hypothesis Tree, ruling out global factors (e
 Segmented time-series analysis was the key diagnostic step.
 
 * **Finding:** The decline in Average Daily Plays per User was concentrated in **IN-North and IN-South**, immediately isolating the scope of the problem to a failure in regional content delivery.
-* "**Visualization:** Segmented Line Plot of Average Daily Plays per User."
 
 
 
@@ -38,7 +37,6 @@ Segmented time-series analysis was the key diagnostic step.
 Analyzing the **Bounce Rate Proxy** confirmed the behavioral cause-users were leaving the app immediately due to poor content recommendations.
 
 * **Finding:** The bounce rate for IN-North/South **spiked sharply** after November 17, confirming the failure mechanism: the model served unengaging content, causing instant abandonment.
-* **Visualization:** Segmented Line Plot of Daily Bounce Rate Proxy (Users who Opened but Did Not Play).
 
 
 
@@ -48,9 +46,9 @@ By using the pre-drop period (Baseline) to establish expected performance, the t
 
 | Metric | Value |
 | :--- | :--- |
-| **Baseline Avg Plays/User (Affected Regions)** | $\approx [BASELINE AVG PLAYS]$ |
-| **Post-Drop Avg Plays/User (Affected Regions)** | $\approx [POST-DROP AVG PLAYS]$ |
-| **Total Plays Lost (Nov 17 - Nov 23)** | **[INSERT FINAL LOST PLAYS HERE]** |
+| **Baseline Avg Plays/User (Affected Regions)** | $\approx [97]$ |
+| **Post-Drop Avg Plays/User (Affected Regions)** | $\approx [89]$ |
+| **Total Plays Lost (Nov 17 - Nov 23)** | **[1.3 million ]** |
 
 ***
 
