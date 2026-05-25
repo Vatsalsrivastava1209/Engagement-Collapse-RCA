@@ -1,0 +1,5 @@
+check_name,passed,detail
+row_count_positive,True,105209
+event_id_unique,True,105209 unique ids
+no_negative_watch_seconds,True,0 invalid rows
+rollout_limited_to_affected_regions,True,16504 v4.2 events

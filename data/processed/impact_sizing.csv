@@ -1,0 +1,3 @@
+cohort,active_user_days,actual_video_plays,expected_video_plays,lost_video_plays,actual_watch_seconds,expected_watch_seconds,lost_watch_seconds
+affected,3084.0,2573.0,3458.5394904645073,885.5394904645069,168005.0,554162.8822031515,386157.8822031514
+unaffected,5872.0,6641.0,6610.576786102465,-30.423213897535447,1068220.0,1045929.3693824874,-22290.630617512565

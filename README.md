@@ -1,72 +1,136 @@
-# Case Study: Investigating an Engagement Collapse After a Recommendation Model Update
+# Investigating an Engagement Collapse After a Recommendation Model Update
 
-## Summary & Key Findings
+A SQL-first product analytics case study for diagnosing a localized engagement drop after a recommendation-model rollout.
 
-This project utilized PostgreSQL, Python (Pandas, Seaborn), and advanced SQL (Window Functions, CTEs) to perform a **Root Cause Analysis (RCA)** on a severe metric collapse.
+## Executive Summary
 
-| Metric | Impact | Root Cause | Business Impact |
-| :--- | :--- | :--- | :--- |
-| **Overall Watch Time** | **17% Collapse** | Localized failure in **Recommendation Model v4.2** | Loss of approximately **1.3 Million** total video plays across two key regions over 7 days. |
-| **Location** | **Highly Segmented** | Failure traced specifically to the **IN-North and IN-South regions**. | High user frustration confirmed by a **8** spike in Bounce Rate in affected areas. |
+This project simulates a streaming-product incident: a new recommendation model, `v4.2`, is rolled out to `IN-North` and `IN-South` on `2025-11-17`. Engagement drops sharply in those regions while unaffected regions remain on the stable `v4.1` model.
 
-***
+The analysis uses deterministic synthetic clickstream data, DuckDB SQL, Python reporting, and a Streamlit dashboard to answer a practical business question:
 
-## Technology Stack & Techniques
+> Did the model rollout create a localized engagement collapse, and what should the business do next?
 
-* **Database:** PostgreSQL (Primary analytics platform, used for DDL/DML and complex joins).
-* **Tools:** Python, Pandas, Matplotlib, **Seaborn** (Visualization), `psycopg2` (ETL).
-* **SQL Mastery:** Employed **Common Table Expressions (CTEs)** for clear multi-step logic, **Window Functions** for session-level analysis (implied), and **Defensive SQL (`NULLIF`)** to prevent query failure.
-* **Techniques:** Segmented Root Cause Analysis, Time-Series Breakdown, and Behavioral Proxy Analysis (Bounce Rate).
+## Key Findings
 
-***
+- Affected regions: `IN-North`, `IN-South`.
+- Primary metric: plays per active user.
+- Affected-region engagement fell from `5.62` to `4.14` plays per active user, a `-26.3%` change.
+- Unaffected regions changed by only `-1.4%` over the same period.
+- Difference-in-differences estimate: `-1.396` plays per active user.
+- Affected-region bounce rate increased from `7.6%` to `32.0%`.
+- Affected-region completion rate fell from `64.4%` to `38.1%`.
+- Estimated affected-region loss: `886` video plays and `107.3` watch hours.
 
-## Phase I & II: Diagnosis and Evidence
+The evidence supports a rollout-related degradation in the affected regions. This is not a randomized causal experiment, so the conclusion is framed as RCA evidence rather than proof.
 
-The investigation followed a clear Hypothesis Tree, ruling out global factors (example : device type, app version) to isolate the segment responsible for the collapse.
+## Recommendation
 
-### 1. Initial Observation and Segmentation 
+Rollback `v4.2` in `IN-North` and `IN-South`, audit ranking diversity and feature drift, then relaunch through a guarded canary with automated metric alerts.
 
-Segmented time-series analysis was the key diagnostic step.
+## Visual Evidence
 
-* **Finding:** The decline in Average Daily Plays per User was concentrated in **IN-North and IN-South**, immediately isolating the scope of the problem to a failure in regional content delivery.
+![Metric tree](reports/figures/metric_tree.png)
 
+![Regional drop](reports/figures/segment_drop.png)
 
+![Funnel health](reports/figures/funnel.png)
 
-### 2. Behavioral Analysis 
-
-Analyzing the **Bounce Rate Proxy** confirmed the behavioral cause-users were leaving the app immediately due to poor content recommendations.
-
-* **Finding:** The bounce rate for IN-North/South **spiked sharply** after November 17, confirming the failure mechanism: the model served unengaging content, causing instant abandonment.
-
-
-
-### 3. Final Quantification (The "Cost")
-
-By using the pre-drop period (Baseline) to establish expected performance, the total loss was quantified for executive reporting.
-
-| Metric | Value |
-| :--- | :--- |
-| **Baseline Avg Plays/User (Affected Regions)** | $\approx [97]$ |
-| **Post-Drop Avg Plays/User (Affected Regions)** | $\approx [89]$ |
-| **Total Plays Lost (Nov 17 - Nov 23)** | **[1.3 million ]** |
-
-***
-
-## Actionable Recommendations
-
-This analysis delivered a clear, prioritized action plan to stop the metric bleeding and prevent future recurrence.
-
-| Priority | Stakeholder | Recommendation | Monitoring KPI |
-| :--- | :--- | :--- | :--- |
-| **P1: Immediate Stop** | Engineering | **Rollback Recommendation Model v4.2** for all users in **IN-North and IN-South** to the stable v4.1 model immediately. | IN-North/South **Bounce Rate** must fall below 12% within **48 hours**. |
-| **P2: Deep Investigation** | Data Science | **Audit Model v4.2 Feature Drift:** Investigate the training data and feature importance to find why the model failed to generalize to user preferences in the affected regions. | Check if model v4.2's output diversity score dropped for the affected regions. |
-| **P3: Prevention** | Product/Ops | Implement a mandatory **Canary Testing** phase for all major model updates, limited to low-impact regions, with automated metric alerts. | Zero critical metric drops within 90 days post-launch. |
-
-***
+![Anomaly detection](reports/figures/anomaly_detection.png)
 
 ## Repository Structure
 
-* `./data_generator.py`: Python script used to create the synthetic JSONL clickstream data.
-* `./engagement_logs/`: Directory containing the `day_*.json` event logs.
-* `./analysis_notebook.ipynb`: The Jupyter Notebook containing all the connection code, advanced SQL queries, Pandas manipulation, and visualization code.
-* `./sql_queries.sql`: Clean file containing the DDL (`CREATE TABLE`, `CREATE INDEX`) and the final RCA queries used.
+```text
+.
+|-- app.py
+|-- case_study.md
+|-- data_dictionary.md
+|-- requirements.txt
+|-- scripts/
+|   |-- generate_synthetic_data.py
+|   |-- validate_data.py
+|   `-- run_analysis.py
+|-- sql/
+|   |-- data_quality_checks.sql
+|   |-- metric_tree.sql
+|   |-- segment_drilldown.sql
+|   |-- funnel_analysis.sql
+|   |-- anomaly_detection.sql
+|   `-- impact_sizing.sql
+|-- data/
+|   |-- raw/events.jsonl
+|   `-- processed/
+|-- reports/
+|   |-- executive_summary.md
+|   |-- analysis_summary.json
+|   `-- figures/
+|-- notebooks/
+|-- tests/
+`-- .github/workflows/ci.yml
+```
+
+## Reproduce the Analysis
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+
+python scripts/generate_synthetic_data.py
+python scripts/validate_data.py
+python scripts/run_analysis.py
+```
+
+On macOS or Linux, activate the environment with:
+
+```bash
+source .venv/bin/activate
+```
+
+## Dashboard
+
+```bash
+streamlit run app.py
+```
+
+The dashboard includes:
+
+- Executive Summary
+- Metric Tree
+- Segment Drilldown
+- Funnel
+- Anomaly Detection
+- Raw Data Sample
+
+## Methodology
+
+The project is intentionally SQL-first. Python handles orchestration, charting, and report generation, while DuckDB executes the analytical queries.
+
+The analysis covers:
+
+- data quality checks
+- pre/post metric tree
+- affected vs unaffected cohort comparison
+- region/device/model-version segmentation
+- session funnel analysis
+- anomaly detection against a pre-rollout baseline
+- business impact sizing
+- bootstrap confidence interval for the affected-region pre/post delta
+
+## Synthetic Data Disclosure
+
+The data is synthetic and deterministic. It is designed to demonstrate product analytics methodology, not to describe a real company incident. The simulation injects a rollout-related failure only in `IN-North` and `IN-South` after `2025-11-17`; see `data_dictionary.md` for details.
+
+## Resume Bullets
+
+- Built a reproducible SQL-first RCA project to investigate a recommendation-model engagement collapse using DuckDB, Python, and Streamlit.
+- Generated deterministic synthetic clickstream data with a documented rollout event, affected/unaffected cohorts, funnel events, and model-version metadata.
+- Implemented anomaly detection, metric-tree decomposition, funnel analysis, segmentation, bootstrap intervals, and business impact sizing.
+- Automated data validation, analysis report generation, dashboard inputs, and CI checks for reproducible portfolio review.
+- Produced an executive case study translating analytical evidence into rollback, model-audit, and canary-monitoring recommendations.
+
+## Limitations
+
+- Synthetic data is useful for demonstrating method, but real production data would be required for a real business decision.
+- The design is observational, not randomized.
+- The simulated rollout makes the affected region mechanism clean; real incidents often include confounding from seasonality, marketing, app bugs, content mix, or logging changes.
+- A production-grade system would add real-time alerting, experiment guardrails, and deeper model-feature diagnostics.

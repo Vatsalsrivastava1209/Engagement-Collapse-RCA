@@ -1,0 +1,27 @@
+{
+  "business_question": "Did the recommendation model rollout create a localized engagement collapse?",
+  "rollout_date": "2025-11-17",
+  "affected_regions": [
+    "IN-North",
+    "IN-South"
+  ],
+  "primary_metric": "plays_per_active_user",
+  "affected_pre_plays_per_user": 5.618357487922705,
+  "affected_post_plays_per_user": 4.143317230273752,
+  "affected_drop_pct": -0.2625394095729436,
+  "unaffected_drop_pct": -0.013914807491430814,
+  "difference_in_differences": -1.3955557588290572,
+  "bootstrap_ci_post_minus_pre": {
+    "lower": -0.3142386060758423,
+    "upper": -0.2609981510943347
+  },
+  "affected_bounce_pre": 0.07649550026469032,
+  "affected_bounce_post": 0.3203909138932911,
+  "affected_completion_pre": 0.643737460590427,
+  "affected_completion_post": 0.3812670034978624,
+  "lost_video_plays": 885.5394904645069,
+  "lost_watch_hours": 107.26607838976429,
+  "post_rollout_anomaly_days": 14,
+  "recommendation": "Evidence supports rolling back v4.2 in IN-North and IN-South, then auditing ranking diversity and feature drift before re-launch.",
+  "causal_language": "This synthetic RCA supports a rollout-related degradation; it is not a randomized causal experiment."
+}
