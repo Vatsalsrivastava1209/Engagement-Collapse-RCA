@@ -1,6 +1,19 @@
-# Investigating an Engagement Collapse After a Recommendation Model Update
+# Engagement Collapse RCA
 
 A SQL-first product analytics case study for diagnosing a localized engagement drop after a recommendation-model rollout.
+
+## Project Snapshot
+
+| | |
+|---|---|
+| **Business problem** | Determine whether recommendation model `v4.2` caused a localized engagement collapse and recommend the safest response. |
+| **Quantified result** | Plays per active user fell **26.3%** in affected regions versus **1.4%** elsewhere; estimated impact was **886 lost plays** and **107.3 watch hours**. |
+| **Method** | DuckDB SQL, affected-vs-unaffected comparison, difference-in-differences, funnel analysis, segmentation, anomaly detection, bootstrap intervals, and impact sizing. |
+| **Demo** | Run `streamlit run app.py`; the dashboard covers the metric tree, segment drilldown, funnel, anomalies, and raw data. |
+| **Limitations** | Deterministic synthetic data and an observational design demonstrate the RCA method but do not prove production causality. |
+| **Reproduce** | `pip install -r requirements.txt` → `python scripts/generate_synthetic_data.py` → `python scripts/validate_data.py` → `python scripts/run_analysis.py`. |
+
+![Affected versus unaffected regional engagement](reports/figures/segment_drop.png)
 
 ## Executive Summary
 
